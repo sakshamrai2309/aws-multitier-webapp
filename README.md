@@ -1,61 +1,69 @@
-# AWS Multi-Tier Web Application Deployment
+# Java Web Application Architecture on AWS
 
-A production-grade multi-tier web application deployed on AWS with automated CI/CD pipeline.
+## Project Overview
 
-## Architecture Overview
+This is a learning project focused on understanding the architecture and deployment of a Java-based web application using AWS and DevOps concepts.
 
-**Frontend Layer**
-- Application Load Balancer (HTTPS port 443, SSL certificate configured)
-- Routes traffic to application servers in Auto Scaling Group
+The project is based on hands-on learning and architecture walkthroughs.
 
-**Application Layer**
-- Tomcat servers on EC2 instances
-- Auto Scaling Group across 2 Availability Zones
-- Scales out at CPU > 70%, scales in at CPU < 30%
+The objective is to understand how different application components and AWS services work together to provide scalability, availability, performance, and monitoring.
 
-**Backend Layer**
-- MySQL on EC2 (private subnet) — primary database
-- Memcached on EC2 — query result caching to reduce DB load
-- RabbitMQ on EC2 — async message queue between app components
+## Architecture
 
-## CI/CD Pipeline (Jenkins)
+### 1. Application Architecture
 
-```
-Git Push → Webhook Trigger → Jenkins Pipeline
-→ Stage 1: Git Checkout
-→ Stage 2: Maven Build
-→ Stage 3: Upload artifact to S3
-→ Stage 4: SSH deploy to Tomcat servers
-```
+The application architecture includes:
 
-## AWS Services Used
+- NGINX as a reverse proxy
+- Apache Tomcat for running the Java application
+- MySQL for database storage
+- RabbitMQ for message processing
+- Memcached for caching
+- NFS for shared file storage
 
-| Service | Purpose |
-|--------|---------|
-| EC2 | App servers, DB, cache, MQ |
-| ALB | Load balancing, SSL termination |
-| Auto Scaling | High availability |
-| Route 53 | Private DNS for backend services |
-| S3 | Artifact storage |
-| CloudWatch | Monitoring and alerts |
-| VPC | Network isolation |
-| Security Groups | Tier-level access control |
+### 2. AWS Deployment Architecture
 
-## Security Design
+The AWS architecture includes:
 
-- Each backend service in its own Security Group
-- App tier can only talk to backend — no direct internet access
-- Private subnets for all backend services
-- SSL/TLS on ALB
+- Amazon Route 53 for DNS
+- Amazon CloudFront for content delivery
+- AWS Elastic Beanstalk for application deployment
+- Application Load Balancer for traffic distribution
+- Amazon EC2 and Auto Scaling for application hosting
+- Amazon S3 for artifact storage
+- Amazon CloudWatch for monitoring
+- Amazon RDS for MySQL database
+- Amazon MQ for message brokering
 
-## Tech Stack
+## Application Flow
 
-- **Cloud:** AWS
-- **CI/CD:** Jenkins, Maven
-- **Web Server:** Apache Tomcat
-- **Database:** MySQL
-- **Cache:** Memcached
-- **Messaging:** RabbitMQ
-- **DNS:** Route 53 Private Hosted Zone
-- **OS:** Linux (Ubuntu)
-- **Scripting:** Shell Script
+Users access the application through a domain name.
+
+DNS resolves the domain, and the request reaches the application through the traffic management layer.
+
+The Java application runs on Apache Tomcat. Backend services such as MySQL, Memcached, and RabbitMQ support database operations, caching, and asynchronous processing.
+
+In the AWS architecture, managed services help simplify deployment, scaling, and monitoring.
+
+## Key Concepts Learned
+
+- AWS cloud architecture
+- Application deployment concepts
+- Load balancing
+- Auto Scaling
+- High availability
+- Reverse proxy
+- Database and caching
+- Message queuing
+- Infrastructure monitoring
+- AWS managed services
+
+## Learning Outcome
+
+This project helped me understand how application components communicate and how AWS services can be used to design a scalable and highly available application architecture.
+
+## Project Type
+
+Architecture and learning project.
+
+This repository contains architecture documentation and learning notes. It does not contain application source code or a complete deployment implementation.
